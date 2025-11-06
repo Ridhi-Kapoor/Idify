@@ -255,7 +255,7 @@ useEffect(() => {
   return () => { delete window.mapApi; };
 }, []);
 
-  return (
+  return (  
     <div className="h-screen w-screen overflow-hidden">
       {/* Controls */}
       <div className="absolute z-[1000] left-4 top-4 w-[min(520px,calc(100vw-2rem))] space-y-3">
