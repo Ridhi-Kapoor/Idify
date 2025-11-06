@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* Modern palette + base */
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 16% 46%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 224 76% 56%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 216 33% 97%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 204 94% 94%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 224 76% 56%;
+
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --muted: 217 19% 15%;
+    --muted-foreground: 215 20% 65%;
+    --card: 224 71% 4%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 224 76% 60%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217 19% 12%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 217 19% 12%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 19% 18%;
+    --input: 217 19% 18%;
+    --ring: 224 76% 60%;
+  }
+
+  html, body { height: 100%; }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    letter-spacing: 0.1px;
+  }
+
+  /* Subtle page gradient */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(80rem 50rem at -20% -20%, rgba(99,102,241,.15), transparent 60%),
+      radial-gradient(70rem 40rem at 120% -10%, rgba(56,189,248,.12), transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  * { border-color: hsl(var(--border)); }
+}
