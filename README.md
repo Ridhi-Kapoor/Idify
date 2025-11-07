@@ -28,7 +28,7 @@ It replaces physical ID cards with a secure, easy-to-use digital identity system
 
 ## 🎥 Demo
 
-![Idify Project Demo](assets/demo.gif)
+[Watch the Idify Project Demo on YouTube](https://www.youtube.com/watch?v=CHz9XdTCuWE)
 
 ---
 
