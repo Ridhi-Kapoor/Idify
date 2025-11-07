@@ -26,6 +26,12 @@ It replaces physical ID cards with a secure, easy-to-use digital identity system
 
 ---
 
+## 🎥 Demo
+
+![Idify Project Demo](assets/demo.gif)
+
+---
+
 ## 🔐 Environment Setup
 Create a `.env.local` file in the project root:
 VITE_FIREBASE_API_KEY=xxxx
@@ -35,9 +41,6 @@ VITE_FIREBASE_STORAGE_BUCKET=xxxx
 VITE_FIREBASE_MESSAGING_SENDER_ID=xxxx
 VITE_FIREBASE_APP_ID=xxxx
 
-> This file is **not uploaded** to GitHub. Share manually with teammates.
-
----
 
 ## 🛠 Installation
 
