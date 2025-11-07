@@ -1,6 +1,7 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react"; 
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css"; // Import leaflet CSS
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -15,7 +16,10 @@ L.Icon.Default.mergeOptions({
 
 // Utility: directions link
 const goToDirections = (lat, lng) => {
-  const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+  // --- FIX for directions link ---
+  // Was: https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}
+  const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  // --- END FIX ---
   window.open(url, "_blank");
 };
 
@@ -37,8 +41,44 @@ function UseMyLocation({ setCenter }) {
   return null;
 }
 
-export default function DiscountMap({ places=[], defaultCenter = [28.5453, 77.1926] }) {
+// --- NEW ---
+// 2. New component to handle flying to and opening popups
+function HandleSelectedPlace({ selectedPlace, markerRefs, places }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (selectedPlace) {
+      // Find the marker ref by its unique name
+      const markerRef = markerRefs.current[selectedPlace.name];
+      
+      // Find the place data to get its lat/lng
+      const placeData = places.find(p => p.name === selectedPlace.name);
+
+      if (markerRef && placeData) {
+        // Fly map to the new coordinates
+        map.flyTo([placeData.lat, placeData.lng], 16); // Zoom in a bit closer
+        
+        // Open the popup
+        // Use a small timeout to ensure the popup opens after the "fly" animation
+        setTimeout(() => {
+          markerRef.openPopup();
+        }, 300);
+      }
+    }
+  }, [selectedPlace, map, markerRefs, places]);
+
+  return null; // This component does not render anything
+}
+// --- END NEW ---
+
+// 3. Accept 'selectedPlace' prop
+export default function DiscountMap({ places=[], defaultCenter = [28.5453, 77.1926], selectedPlace = null }) {
   const [center, setCenter] = useState(defaultCenter);
+  
+  // --- NEW ---
+  // 4. Create a ref to hold refs for all markers
+  const markerRefs = useRef({});
+  // --- END NEW ---
 
   // Fit bounds to all markers (after render)
   const bounds = useMemo(() => {
@@ -58,12 +98,33 @@ export default function DiscountMap({ places=[], defaultCenter = [28.5453, 77.19
       scrollWheelZoom={false}
     >
       <TileLayer
-        attribution='&copy; OpenStreetMap'
+        attribution='© OpenStreetMap'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <UseMyLocation setCenter={setCenter} />
+      
+      {/* --- NEW --- */}
+      {/* 5. Add the component to handle map interactions */}
+      <HandleSelectedPlace 
+        selectedPlace={selectedPlace} 
+        markerRefs={markerRefs} 
+        places={places}
+      />
+      {/* --- END NEW --- */}
+      
       {places.map((p, i) => (
-        <Marker key={i} position={[p.lat, p.lng]}>
+        <Marker 
+          key={i} 
+          position={[p.lat, p.lng]}
+          // --- NEW ---
+          // 6. Assign the ref for this specific marker
+          ref={(el) => {
+            if (el) {
+              markerRefs.current[p.name] = el;
+            }
+          }}
+          // --- END NEW ---
+        >
           <Popup>
             <div className="space-y-1">
               <div className="font-semibold">{p.name}</div>
